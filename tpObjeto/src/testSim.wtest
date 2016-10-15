@@ -1,0 +1,62 @@
+import Sim.*
+import personalidades.*
+import testSimFixture.*
+
+test "crearSim" {
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+	unSim.setNivelDeFelicidad(10)
+	
+	assert.equals("masculino", unSim.getSexo())
+	assert.equals(20, unSim.getEdad())
+	assert.equals(10, unSim.getNivelDeFelicidad())
+	assert.equals(buenazo, unSim.getPersonalidad())
+}
+
+test "hacerAmigos"{
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getAmigo1())
+	unSim.hacerAmigo(testSimFixture.getAmigo2())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
+	
+	assert.equals("sim2", unSim.getAmigos().get(0).getNombre())
+	assert.equals("sim3", unSim.getAmigos().get(1).getNombre())
+	assert.equals("sim4", unSim.getAmigos().get(2).getNombre())
+}
+
+test "nivelDeFelicidad"{
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getAmigo1())
+	unSim.hacerAmigo(testSimFixture.getAmigo2())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
+	
+	assert.equals(33.75, unSim.getNivelDeFelicidad())
+}
+
+test "popularidad"{
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getAmigo1())
+	unSim.hacerAmigo(testSimFixture.getAmigo2())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
+	
+	assert.equals(30, unSim.popularidad())
+}
+
+test "trabajoCopado" {
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+	unSim.setEmpleo(testSimFixture.getTrabajoCopado())
+	assert.equals("musico", unSim.getEmpleo().getNombre())
+	unSim.trabajar()
+	assert.equals(50000, unSim.getDinero())
+	assert.equals(11, unSim.getNivelDeFelicidad())
+}
+
+test "trabajoMercenario"{
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+	unSim.setEmpleo(testSimFixture.getTrabajoMercenario())
+	unSim.trabajar()
+	unSim.trabajar()
+	assert.equals(102, unSim.getDinero())
+}

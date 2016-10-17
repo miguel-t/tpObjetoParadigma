@@ -1,10 +1,11 @@
+import mensajeUsuario.*
 
 class Sim {
 	var nombre
 	var sexo
 	var edad
 	var nivelDeFelicidad
-	var conjuntoDeAmigos = []
+	var amigos = new List()
 	var empleo
 	var personalidad
 	var dinero = 0
@@ -62,26 +63,35 @@ class Sim {
 	}
 	
 	method trabajar(){
-		empleo.getTipo().influir(self, empleo);
+		empleo.getTipo().influir(self, empleo)
 	}
 
 	method hacerAmigo(_amigo) {
-		try{
-			nivelDeFelicidad += self.valorar(_amigo)
+		
+		if(!amigos.contains(_amigo)){
+			self.valorarAmigo(_amigo)
+			amigos.add(_amigo)
+			
+		}else{
+			console.println(_amigo.getNombre() +  mensajeUsuario.getExisteAmigo())
 		}
-		catch e : Exception{ } 
-		conjuntoDeAmigos.add(_amigo)
+		
 	}
 
 	method getAmigos() {
-		return conjuntoDeAmigos
+		return amigos
 	}
 
 	method popularidad() {
-		return conjuntoDeAmigos.sum({ amigo => amigo.getNivelDeFelicidad() })
+		return amigos.sum({ amigo => amigo.getNivelDeFelicidad() })
 	}
 
-	method valorar(_amigo) {
-		return personalidad.valoracion(self, _amigo)
+	method valorarAmigo(_amigo) {
+	    personalidad.valoracion(self, _amigo)
 	}
+
+	/**prueba de concepto 
+	   no permitir objeto duplicado en una lista
+	 */
+	
 }

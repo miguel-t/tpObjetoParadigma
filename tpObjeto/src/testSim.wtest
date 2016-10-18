@@ -64,3 +64,26 @@ test "trabajoMercenario"{
 	unSim.trabajar()
 	assert.equals(102, unSim.getDinero())
 }
+
+// 5. saber si un Sim es amigo de otro
+test "pedroEsAmigoDeJuan"{
+	var simJuan = new Sim("juan", "masculino", 20, buenazo, 10)
+	simJuan.hacerAmigo(testSimFixture.getSimPedro());
+	assert.equals(simJuan.esAmigo(testSimFixture.getSimPedro()))
+	
+}
+test "hernanNoEsAmigoDeJuan"{
+	var simJuan = new Sim("juan", "masculino", 20, buenazo, 10)
+	assert.equals(false,simJuan.esAmigo(testSimFixture.getSimHernan()))
+	
+}
+
+
+
+
+
+
+
+
+
+

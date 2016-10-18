@@ -10,4 +10,8 @@ object testSimFixture {
 	method getTrabajoCopado() = new Trabajo("musico", copado, 50000)
 	method getTrabajoMercenario() = new Trabajo("programador", mercenario, 20000)
 	method getTrabajoAburrido() = new Trabajo("data entry", aburrido, 15000)
+	method getSimPedro() = new Sim("pedro", "masculino", 25, interesado, 10)
+	method getSimHernan() = new Sim("hernan", "masculino", 26, interesado, 10)
+	
+
 }

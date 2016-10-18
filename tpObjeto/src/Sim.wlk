@@ -90,8 +90,8 @@ class Sim {
 	    personalidad.valoracion(self, _amigo)
 	}
 
-	/**prueba de concepto 
-	   no permitir objeto duplicado en una lista
-	 */
-	
+ 	//5.Saber si un Sim es amigo de otro.
+	method esAmigo(otroSim){
+		return amigos.contains(otroSim)
+	}
 }

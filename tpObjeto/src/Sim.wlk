@@ -90,8 +90,16 @@ class Sim {
 	    personalidad.valoracion(self, _amigo)
 	}
 
- 	//5.Saber si un Sim es amigo de otro.
-	method esAmigo(otroSim){
+ 	method esAmigo(otroSim){
 		return amigos.contains(otroSim)
+	}
+	
+	method ultimoNAmigos(cantidadN){
+		var cantAmigos  = amigos.size()
+		if( cantAmigos < cantidadN){
+			return self.getAmigos()
+		}else{
+			return self.getAmigos().subList(cantAmigos - cantidadN , cantAmigos)
+		}
 	}
 }

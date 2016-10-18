@@ -79,6 +79,24 @@ test "hernanNoEsAmigoDeJuan"{
 }
 
 
+test "ultimos4Amigos"{
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getSimHernan())
+	unSim.hacerAmigo(testSimFixture.getSimJuan())
+	unSim.hacerAmigo(testSimFixture.getSimMartin())
+	unSim.hacerAmigo(testSimFixture.getSimEmiliano())
+	unSim.hacerAmigo(testSimFixture.getSimGuillermo())
+	unSim.hacerAmigo(testSimFixture.getSimPedro())
+	
+	var ultimos4amigos =  unSim.ultimoNAmigos(4);
+	
+	assert.equals(testSimFixture.getSimMartin().getNombre(), ultimos4amigos.get(0).getNombre())	
+	assert.equals(testSimFixture.getSimEmiliano().getNombre(), ultimos4amigos.get(1).getNombre())	
+	assert.equals(testSimFixture.getSimGuillermo().getNombre(), ultimos4amigos.get(2).getNombre())	
+	assert.equals(testSimFixture.getSimPedro().getNombre(), ultimos4amigos.get(3).getNombre())	
+}	
+
 
 
 

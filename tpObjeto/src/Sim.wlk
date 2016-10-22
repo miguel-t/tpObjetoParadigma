@@ -111,5 +111,15 @@ class Sim {
 			return self.getAmigos().subList(posicion_0, cantidadAntiguos)
 		}
 	}
-
+	
+	//9
+	method esElMasPopular(){
+		var nivelPopulad = self.popularidad();
+		
+		amigos.forEach({amigo => 
+			if(!amigo.popularidad()<= nivelPopulad)
+				return false
+			})	
+		return true
+	}
 }

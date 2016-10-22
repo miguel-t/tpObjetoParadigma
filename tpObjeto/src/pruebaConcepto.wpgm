@@ -1,0 +1,33 @@
+import Sim.*
+import testSimFixture.*
+import Trabajo.*
+import personalidades.*
+
+program pruebaConcepto {
+
+	console.println('Hello Wollok')
+
+	
+//	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+//	var simMarcelo = new Sim("marcelo", "masculino", 20, buenazo, 10)
+//	
+	
+//	unSim.hacerAmigo(testSimFixture.getAmigo1())
+//	unSim.hacerAmigo(testSimFixture.getAmigo2())
+//	unSim.hacerAmigo(testSimFixture.getAmigo3())
+//	
+//	
+//	simMarcelo.hacerAmigo(testSimFixture.getAmigo1())
+//	simMarcelo.hacerAmigo(testSimFixture.getAmigo2())
+//	
+//	unSim.hacerAmigo(simMarcelo)
+//	
+//	console.println("1:" +testSimFixture.getAmigo1().popularidad())
+//	console.println("2:" +testSimFixture.getAmigo2().popularidad())
+//	console.println("3:" +testSimFixture.getAmigo3().popularidad())
+//	console.println("unSim:" +unSim.popularidad())
+//	console.println("simMarcelo:" +simMarcelo.popularidad())
+//	console.println("esElMasPopular" + unSim.esElMasPopular())
+
+
+}

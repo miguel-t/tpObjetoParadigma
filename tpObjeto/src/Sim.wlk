@@ -1,6 +1,7 @@
 import mensajeUsuario.*
 
 class Sim {
+	const posicion_0=0
 	var nombre
 	var sexo
 	var edad
@@ -102,4 +103,13 @@ class Sim {
 			return self.getAmigos().subList(cantAmigos - cantidadN , cantAmigos)
 		}
 	}
+	method masAntiguos(cantidadAntiguos){
+		var cantAmigos  = amigos.size()
+		if( cantAmigos < cantidadAntiguos){
+			return self.getAmigos()
+		}else{
+			return self.getAmigos().subList(posicion_0, cantidadAntiguos)
+		}
+	}
+
 }

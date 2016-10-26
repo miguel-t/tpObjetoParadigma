@@ -114,12 +114,8 @@ class Sim {
 	
 	//9
 	method esElMasPopular(){
-		var nivelPopulad = self.popularidad();
-		
-		amigos.forEach({amigo => 
-			if(!amigo.popularidad()<= nivelPopulad)
-				return false
-			})	
-		return true
+		var nivelPopularidad = self.popularidad();
+	
+		return amigos.all({amigo => amigo.popularidad()<= nivelPopularidad})
 	}
 }

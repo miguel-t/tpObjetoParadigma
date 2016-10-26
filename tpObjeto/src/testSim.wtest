@@ -133,15 +133,11 @@ test "elMasPopular"{
 	
 	unSim.hacerAmigo(simMarcelo)
 	
-	console.println("1:" +testSimFixture.getAmigo1().popularidad())
-	console.println("2:" +testSimFixture.getAmigo2().popularidad())
-	console.println("3:" +testSimFixture.getAmigo3().popularidad())
-	console.println("unSim:" +unSim.popularidad())
+	console.println("unSim: 	" +unSim.popularidad())
 	console.println("simMarcelo:" +simMarcelo.popularidad())
-	console.println("esElMasPopular" + unSim.esElMasPopular())
 	
+	assert.equals(unSim.esElMasPopular())
 	
-//	assert.equals()	
 
 }
 

@@ -43,17 +43,6 @@ test "2. Saber quienes es el amigo a quien más valora un Sim."{
 	assert.equals(sim6.getNombre(), unSim.amigoMasValorado().getNombre())
 }
 
-test "crearSim" {
-	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
-	unSim.setNivelDeFelicidad(10)
-	
-	
-	assert.equals("masculino", unSim.getSexo())
-	assert.equals(20, unSim.getEdad())
-	assert.equals(10, unSim.getNivelDeFelicidad())
-	assert.equals(buenazo, unSim.getPersonalidad())
-}
-
 test "3. Hacer que un Sim se haga amigo de otro"{
 	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
 	

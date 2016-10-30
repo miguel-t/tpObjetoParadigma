@@ -1,0 +1,149 @@
+import Sim.*
+import Vim.*
+import personalidades.*
+import testSimFixture.*
+import estadosDeAnimo.*
+import fuentesDeInformacion.*
+
+test "1. Saber cuánto dinero está dispuesto a prestarle un Sim a otro" {
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	unSim.setDinero(5000)
+	otroSim.setDinero(2500)
+	assert.equals(50, unSim.getDineroMaximoAPrestar(otroSim))
+	
+	unSim.setPersonalidad(interesado)
+	assert.equals(2500, unSim.getDineroMaximoAPrestar(otroSim))
+}
+
+test "2. Hacer que un Sim preste una cantidad de dinero solicitada a otro Sim."{
+	//Si no puede hacerlo, debe fallar con error descriptivo.
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	unSim.setDinero(5000)
+	otroSim.setDinero(3000)
+	
+	//pide mas de lo que el sim le quiere prestar.
+	try{
+		unSim.prestarDinero(otroSim, 500)
+	}
+	catch e: Exception {
+		assert.equals("Cantidad solicitada mayor a la dispuesta a prestar.", e.getMessage())
+	}
+	
+	//pide mas de lo que el sim tiene para prestar.
+	try{
+		unSim.prestarDinero(otroSim, 6000)
+	}
+	catch e: Exception {
+		assert.equals("Dinero insuficiente para realizar el prestamo.", e.getMessage())
+	}
+	
+	//el sim presta el dinero
+	try{
+		unSim.prestarDinero(otroSim, 30)
+		assert.equals(3030, otroSim.getDinero())
+	}
+	catch e: Exception {}
+}
+
+test "3. Desarrollar los nuevos trabajos"{
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var otroSim1 = new Sim("otroSim1", "masculino", 20, buenazo, 10)
+	var otroSim2 = new Sim("otroSim2", "masculino", 20, buenazo, 10)
+	unSim.hacerAmigo(otroSim1)
+	unSim.hacerAmigo(otroSim2)
+	
+	//trabajo mercenario social
+	var empleoMercenarioSocial = testSimFixture.getTrabajoMercenarioSocial()
+	unSim.setEmpleo(empleoMercenarioSocial)
+	unSim.trabajar()
+	assert.equals(102, unSim.getDinero())
+	
+	//trabajo aburrido hasta la muerte
+	var empleoAburridoHastaLaMuerte = testSimFixture.getTrabajoAburridoHastaLaMuerte()
+	empleoAburridoHastaLaMuerte.setNivelDeInfluencia(5)
+	empleoAburridoHastaLaMuerte.setFactorDeFelicidad(5)
+	unSim.setEmpleo(empleoAburridoHastaLaMuerte)
+	unSim.trabajar()
+	assert.equals(15102, unSim.getDinero())
+	assert.equals(-2.5, unSim.getNivelDeFelicidad())
+}
+
+test "4. Hacer que el Sim cambie su estado de ánimo (si corresponde) cuando va a
+trabajar."{
+	//sim trabajador
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.setEstadoDeAnimo(euforico)
+	var empleoMercenarioSocial = testSimFixture.getTrabajoMercenarioSocial()
+	unSim.setEmpleo(empleoMercenarioSocial)
+	unSim.trabajar()
+	assert.equals(normal, unSim.getEstadoDeAnimo())
+	
+	//sim desempleado
+	var otroSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.setEstadoDeAnimo(euforico)
+	otroSim.trabajar()
+	assert.equals(euforico, unSim.getEstadoDeAnimo())
+}
+
+test "5. Desarrollar las fuentes de información"{
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var amigoDelOtro = new Sim("AmigoSim", "masculino", 20, buenazo, 10)
+	otroSim.hacerAmigo(amigoDelOtro)
+	
+	unSim.setFuenteDeInformacion(otroSim)
+	unSim.setFuenteDeInformacion(tinelli)
+	unSim.setFuenteDeInformacion(rial)
+	//creo un libro
+	var capitulos = ["Capitulo 1", "Capitulo 2", "Capitulo 3"]
+	libro.setCapitulos(capitulos)
+	unSim.setFuenteDeInformacion(libro)
+	
+	assert.equals("Chisme de: AmigoSim", otroSim.getInformacion())
+	assert.equals("Toto", tinelli.getInformacion())
+	assert.equals("Escandalo", rial.getInformacion())
+	assert.equals("Capitulo 1", libro.getInformacion())
+}
+
+test "6. Hacer que un Sim se informe: consiste en solicitarle a cada una de sus fuentes
+de información un conocimiento, y hacer que el Sim lo aprenda."{
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.setFuenteDeInformacion(tinelli)
+	unSim.setFuenteDeInformacion(rial)
+	//creo un libro
+	var capitulos = ["Capitulo 1", "Capitulo 2", "Capitulo 3"]
+	libro.setCapitulos(capitulos)
+	unSim.setFuenteDeInformacion(libro)
+	unSim.informarse()
+	assert.equals("Toto",unSim.getConocimientos().get(0))
+	assert.equals("Escandalo",unSim.getConocimientos().get(1))
+	assert.equals("Capitulo 1",unSim.getConocimientos().get(2))
+}
+
+test "7. Hacer que un Sim cumpla años."{
+/*es decir, hacer que su edad se incremente en
+una unidad. A los Vims también podemos pedirles que cumplan años, pero esto
+no produce ningún efecto.*/
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.cumplirAnio()
+	assert.equals(21, unSim.getEdad())
+	
+	//cre un Vim
+	var unVim = new Vim("sim", "masculino", buenazo, 10)
+	unVim.cumplirAnio()
+	assert.equals(18, unVim.getEdad())
+}
+
+/*8. Explicar qué cambios sería necesario realizar si quisiéramos contemplar la
+posibilidad de que un Vim embruje a un Sim, convirtiéndolo en Vim..( no hace
+falta realizar los cambios, queremos que sólo lo expliquen)*/
+
+/* Para que un Sim pueda pasar a ser un Vim, la clase Sim deberia tener un atributo que indique si es un
+ * Vim o un Sim. Tambien se agregaria un metod "embrujar" el cual recibiria un Sim como parametro, 
+ * y le cambiaria su estado a Vim, siempre y cuando el estado del objeto que invoca a embrujar sea Vim. Si
+ * el objeto es Sim, el metodo "embrujar" lanzara una excepcion. 
+ */

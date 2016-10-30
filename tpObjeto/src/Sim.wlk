@@ -1,4 +1,6 @@
 import mensajeUsuario.*
+import personalidades.*
+import estadosDeAnimo.*
 
 class Sim {
 	const posicion_0=0
@@ -11,6 +13,10 @@ class Sim {
 	var empleo
 	var personalidad = 0
 	var dinero = 0
+	var dineroMaximoAPrestar = 0
+	var estadoDeAnimo = normal
+	var fuentesDeInformacion = new List()
+	var conocimientos = new List()
 
 	constructor(_nombre, _sexo, _edad, _personalidad, _felicidad) {
 		nombre = _nombre
@@ -31,6 +37,11 @@ class Sim {
 	method getEdad() {
 		return edad
 	}
+	
+	method setEdad(_edad) {
+		edad = _edad
+	}
+	
 	
 	method getPersonalidad(){
 		return personalidad
@@ -65,7 +76,10 @@ class Sim {
 	}
 	
 	method trabajar(){
-		empleo.getTipo().influir(self, empleo)
+		self.setEstadoDeAnimo(normal)
+		if( empleo != null ){
+			empleo.getTipo().influir(self, empleo)
+		}
 	}
 
 	method hacerAmigo(_amigo) {
@@ -136,5 +150,60 @@ class Sim {
 	method amigoMasValorado(){
 		self.ordenarSegunValoracion()
 		return amigos.get(0)
+	}
+	
+	method getDineroMaximoAPrestar(unPersonaje){
+		dineroMaximoAPrestar = 10*self.valorarSim(unPersonaje)
+		if( self.getPersonalidad() == interesado){
+			dineroMaximoAPrestar = unPersonaje.getDinero()
+		}
+		return dineroMaximoAPrestar
+	}
+	
+	method prestarDinero(unPersonaje, cantidadAPrestar){
+		if( dinero < cantidadAPrestar){
+			error.throwWithMessage("Dinero insuficiente para realizar el prestamo.")
+		}
+		if( self.getDineroMaximoAPrestar(unPersonaje) <= cantidadAPrestar){
+			error.throwWithMessage("Cantidad solicitada mayor a la dispuesta a prestar.")
+		}
+		self.setDinero( self.getDinero() - cantidadAPrestar )
+		unPersonaje.setDinero(cantidadAPrestar)
+	}
+	
+	method setEstadoDeAnimo(_estadoDeAnimo){
+		estadoDeAnimo = _estadoDeAnimo
+	}
+	
+	method getEstadoDeAnimo(){
+		return estadoDeAnimo
+	}
+	
+	method setFuenteDeInformacion(_fuente){
+		fuentesDeInformacion.add(_fuente)
+	}
+	
+	method getFuentesDeInformacion(){
+		return fuentesDeInformacion
+	}
+	
+	method getInformacion(){
+		return ("Chisme de: "+amigos.get(0).getNombre())
+	}
+	
+	method setConocimiento(_conocimiento){
+		conocimientos.add(_conocimiento)
+	}
+	
+	method getConocimientos(){
+		return conocimientos
+	}
+	
+	method informarse(){
+		conocimientos = fuentesDeInformacion.map({ fuente => fuente.getInformacion()})
+	}
+	
+	method cumplirAnio(){
+		self.setEdad(self.getEdad()+1)
 	}
 }

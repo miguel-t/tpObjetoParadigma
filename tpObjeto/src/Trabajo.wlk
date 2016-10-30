@@ -3,6 +3,8 @@ class Trabajo {
 	var nombre
 	var tipo
 	var sueldo
+	var nivelDeInfluencia = 0
+	var factorDeFelicidad = 1
 	
 	constructor(_nombre, _tipo, _sueldo){
 		nombre = _nombre
@@ -32,5 +34,21 @@ class Trabajo {
 	
 	method getTipo(){
 		return tipo
+	}
+	
+	method getNivelDeInfluencia(){
+		return nivelDeInfluencia
+	}
+	
+	method setNivelDeInfluencia(_nivel){
+		nivelDeInfluencia = _nivel
+	}
+	
+	method getFactorDeFelicidad(){
+		return nivelDeInfluencia
+	}
+	
+	method setFactorDeFelicidad(_nivel){
+		nivelDeInfluencia = _nivel
 	}
 }

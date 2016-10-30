@@ -6,9 +6,10 @@ class Sim {
 	var sexo
 	var edad
 	var nivelDeFelicidad
+	var popularidad = 0
 	var amigos = new List()
 	var empleo
-	var personalidad
+	var personalidad = 0
 	var dinero = 0
 
 	constructor(_nombre, _sexo, _edad, _personalidad, _felicidad) {
@@ -70,9 +71,9 @@ class Sim {
 	method hacerAmigo(_amigo) {
 		
 		if(!amigos.contains(_amigo)){
-			self.valorarAmigo(_amigo)
+			self.valorarSim(_amigo)
 			amigos.add(_amigo)
-			
+			self.calcularPopularidad()
 		}else{
 			console.println(_amigo.getNombre() +  mensajeUsuario.getExisteAmigo())
 		}
@@ -82,13 +83,22 @@ class Sim {
 	method getAmigos() {
 		return amigos
 	}
-
-	method popularidad() {
-		return amigos.sum({ amigo => amigo.getNivelDeFelicidad() })
+	
+	method calcularPopularidad(){
+		var _popularidad = amigos.sum({ amigo => amigo.getNivelDeFelicidad() })
+		self.setPopularidad(_popularidad)
+	}
+	
+	method getPopularidad(){
+		return popularidad
+	}
+	
+	method setPopularidad(_popularidad){
+		popularidad = _popularidad
 	}
 
-	method valorarAmigo(_amigo) {
-	    personalidad.valoracion(self, _amigo)
+	method valorarSim(_amigo) {
+	    return personalidad.valoracion(self, _amigo)
 	}
 
  	method esAmigo(otroSim){
@@ -114,8 +124,19 @@ class Sim {
 	
 	//9
 	method esElMasPopular(){
-		var nivelPopularidad = self.popularidad();
+		var nivelPopularidad = self.getPopularidad();
+		console.println("nivel de popularidad ----> "+nivelPopularidad)
+		console.println("los amigos son "+amigos)
+		var amigosPopulares = amigos.all({amigo => amigo.getPopularidad() <= nivelPopularidad})
+		return amigosPopulares
+	}
 	
-		return amigos.all({amigo => amigo.popularidad()<= nivelPopularidad})
+	method ordenarSegunValoracion(){
+		amigos = amigos.sortedBy({ amigo1, amigo2 => self.valorarSim(amigo1) >= self.valorarSim(amigo2) })
+	}
+	
+	method amigoMasValorado(){
+		self.ordenarSegunValoracion()
+		return amigos.get(0)
 	}
 }

@@ -2,6 +2,47 @@ import Sim.*
 import personalidades.*
 import testSimFixture.*
 
+test "1. Saber cuánto valora un Sim a otro." {
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	//valoracion de buenazos
+	assert.equals(5, unSim.valorarSim(otroSim))
+	
+	//valoracion de interesados
+	unSim.setPersonalidad(interesado)
+	var amigo1 = testSimFixture.getAmigo1()
+		amigo1.setDinero(500)
+	otroSim.hacerAmigo(amigo1)
+	assert.equals(50, unSim.valorarSim(otroSim))
+	
+	//valoracion de superficiales
+	unSim.setPersonalidad(superficial)
+	assert.equals(200, unSim.valorarSim(otroSim))
+	
+	//valoracion de peleados con la vida
+	unSim.setPersonalidad(peleadoConLaVida)
+	assert.equals(0, unSim.valorarSim(otroSim))
+}
+
+test "2. Saber quienes es el amigo a quien más valora un Sim."{
+	var unSim = new Sim("sim", "masculino", 20, superficial, 10)
+	var sim4 = testSimFixture.getAmigo4()
+		sim4.setPopularidad(10)
+		
+	var sim5 = testSimFixture.getAmigo5()
+		sim5.setPopularidad(20)
+		
+	var sim6 = testSimFixture.getAmigo6()
+		sim6.setPopularidad(30)
+		
+		unSim.hacerAmigo(sim4)
+		unSim.hacerAmigo(sim5)
+		unSim.hacerAmigo(sim6)
+		
+	assert.equals(sim6.getNombre(), unSim.amigoMasValorado().getNombre())
+}
+
 test "crearSim" {
 	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
 	unSim.setNivelDeFelicidad(10)
@@ -13,73 +54,43 @@ test "crearSim" {
 	assert.equals(buenazo, unSim.getPersonalidad())
 }
 
-test "hacerAmigos"{
+test "3. Hacer que un Sim se haga amigo de otro"{
 	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
 	
 	unSim.hacerAmigo(testSimFixture.getAmigo1())
 	unSim.hacerAmigo(testSimFixture.getAmigo2())
 	unSim.hacerAmigo(testSimFixture.getAmigo3())
 	unSim.hacerAmigo(testSimFixture.getAmigo3())
-	
-	console.println("cantidad" + unSim.getAmigos().size())
-	
 	assert.equals("sim1", unSim.getAmigos().get(0).getNombre())
 	assert.equals("sim2", unSim.getAmigos().get(1).getNombre())
 	assert.equals("sim3", unSim.getAmigos().get(2).getNombre())
 }
 
-test "nivelDeFelicidad"{
-	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+test "4. Hacer que dos Sims se hagan amigos entre sí"{
+	var unSim = new Sim("unSim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("otroSim", "masculino", 20, buenazo, 10)
+	unSim.hacerAmigo(otroSim)
+	otroSim.hacerAmigo(unSim)
 	
-	unSim.hacerAmigo(testSimFixture.getAmigo1())
-	unSim.hacerAmigo(testSimFixture.getAmigo2())
-	unSim.hacerAmigo(testSimFixture.getAmigo3())
-	
-	assert.equals(33.75, unSim.getNivelDeFelicidad())
+	assert.equals("otroSim", unSim.getAmigos().get(0).getNombre())
+	assert.equals("unSim", otroSim.getAmigos().get(0).getNombre())
 }
 
-test "popularidad"{
-	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+test "5. Saber si un Sim es amigo de otro."{
+	var unSim = new Sim("unSim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("otroSim", "masculino", 20, buenazo, 10)
+	assert.equals(false, unSim.esAmigo(otroSim))
+	otroSim.hacerAmigo(unSim)
+	assert.equals(true, otroSim.esAmigo(unSim))
 	
-	unSim.hacerAmigo(testSimFixture.getAmigo1())
-	unSim.hacerAmigo(testSimFixture.getAmigo2())
-	unSim.hacerAmigo(testSimFixture.getAmigo3())
-	
-	assert.equals(30, unSim.popularidad())
-}
-
-test "trabajoCopado" {
-	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
-	unSim.setEmpleo(testSimFixture.getTrabajoCopado())
-	assert.equals("musico", unSim.getEmpleo().getNombre())
-	unSim.trabajar()
-	assert.equals(50000, unSim.getDinero())
-	assert.equals(11, unSim.getNivelDeFelicidad())
-}
-
-test "trabajoMercenario"{
-	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
-	unSim.setEmpleo(testSimFixture.getTrabajoMercenario())
-	unSim.trabajar()
-	unSim.trabajar()
-	assert.equals(102, unSim.getDinero())
-}
-
-// 5. saber si un Sim es amigo de otro
-test "pedroEsAmigoDeJuan"{
 	var simJuan = new Sim("juan", "masculino", 20, buenazo, 10)
 	simJuan.hacerAmigo(testSimFixture.getSimPedro());
 	assert.equals(simJuan.esAmigo(testSimFixture.getSimPedro()))
 	
-}
-test "hernanNoEsAmigoDeJuan"{
-	var simJuan = new Sim("juan", "masculino", 20, buenazo, 10)
 	assert.equals(false,simJuan.esAmigo(testSimFixture.getSimHernan()))
-	
 }
 
-
-test "ultimos4Amigos"{
+test "6. Preguntarle a un Sim cuales son sus 4 amigos más nuevos"{
 	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
 	
 	unSim.hacerAmigo(testSimFixture.getSimHernan())
@@ -95,9 +106,10 @@ test "ultimos4Amigos"{
 	assert.equals(testSimFixture.getSimEmiliano().getNombre(), ultimos4amigos.get(1).getNombre())	
 	assert.equals(testSimFixture.getSimGuillermo().getNombre(), ultimos4amigos.get(2).getNombre())	
 	assert.equals(testSimFixture.getSimPedro().getNombre(), ultimos4amigos.get(3).getNombre())	
-}	
+		
+}
 
-test "4AmigosMasAntiguos"{
+test "7. Preguntarle a un Sim cuales son sus 4 amigos más antiguos"{
 	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
 	
 	unSim.hacerAmigo(testSimFixture.getSimHernan())
@@ -115,33 +127,29 @@ test "4AmigosMasAntiguos"{
 	assert.equals(testSimFixture.getSimEmiliano().getNombre(),ultimos4amigos.get(3).getNombre())	
 }	
 
-
-test "elMasPopular"{
-	
-
-	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
-	var simMarcelo = new Sim("marcelo", "masculino", 20, buenazo, 10)
-	
+test "8. Preguntarle a un Sim cual es su nivel de popularidad"{
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
 	
 	unSim.hacerAmigo(testSimFixture.getAmigo1())
 	unSim.hacerAmigo(testSimFixture.getAmigo2())
 	unSim.hacerAmigo(testSimFixture.getAmigo3())
 	
+	assert.equals(30, unSim.getPopularidad())
+}
+
+test "9. Preguntarle a un Sim si es el más popular de su círculo de amigos."{
+	//esto se da cuando tiene el mayor coeficiente de popularidad entre todos ellos."
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var simMarcelo = new Sim("marcelo", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getAmigo1())
+	unSim.hacerAmigo(testSimFixture.getAmigo2())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
 	
 	simMarcelo.hacerAmigo(testSimFixture.getAmigo1())
 	simMarcelo.hacerAmigo(testSimFixture.getAmigo2())
 	
 	unSim.hacerAmigo(simMarcelo)
 	
-	console.println("unSim: 	" +unSim.popularidad())
-	console.println("simMarcelo:" +simMarcelo.popularidad())
-	
 	assert.equals(unSim.esElMasPopular())
-	
-
 }
-
-
-
-
-

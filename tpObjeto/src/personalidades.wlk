@@ -7,26 +7,30 @@ object interesado {
 	method valoracion(elQueValora, elValorado){
 		
 		var sumDineroAmigos =  elValorado.getAmigos().sum({amigo => amigo.getDinero()})*0.1
-		elQueValora.setNivelDeFelicidad(elQueValora.getNivelDeFelicidad() + sumDineroAmigos);
-		
+		elQueValora.setNivelDeFelicidad(elQueValora.getNivelDeFelicidad() + sumDineroAmigos)
+		return sumDineroAmigos
 	}
 }
 
 object superficial{
 	method valoracion(elQueValora, elValorado){
-		 elQueValora.setNivelFelicidad(elValorado.popularidad()*20 + elQueValora.getNivelDeFelicidad());
+		var valoracion = elValorado.getPopularidad()*20
+		elQueValora.setNivelDeFelicidad(valoracion + elQueValora.getNivelDeFelicidad());
+		return valoracion
 	}
 }
 
 object buenazo{
 	method valoracion(elQueValora, elValorado){
-	 elQueValora.setNivelDeFelicidad(elQueValora.getNivelDeFelicidad() * 0.5 + elQueValora.getNivelDeFelicidad());
+	 var valoracion = elQueValora.getNivelDeFelicidad() * 0.5
+	 elQueValora.setNivelDeFelicidad(valoracion + elQueValora.getNivelDeFelicidad());
+	 return valoracion
 	}
 }
 
 
 object peleadoConLaVida{
 	method valoracion(elQueValora, elValorado){
-		//No hacemos Nada
+		return 0
 	}
 }

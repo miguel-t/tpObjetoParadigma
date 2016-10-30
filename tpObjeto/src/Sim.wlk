@@ -125,8 +125,6 @@ class Sim {
 	//9
 	method esElMasPopular(){
 		var nivelPopularidad = self.getPopularidad();
-		console.println("nivel de popularidad ----> "+nivelPopularidad)
-		console.println("los amigos son "+amigos)
 		var amigosPopulares = amigos.all({amigo => amigo.getPopularidad() <= nivelPopularidad})
 		return amigosPopulares
 	}

@@ -1,0 +1,185 @@
+import Sim.*
+import personalidades.*
+import testSimFixture.*
+import estadosDeAnimo.*
+
+test "1. Saber cuánto valora un Sim a otro." {
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	//valoracion de buenazos
+	assert.equals(5, unSim.valorarSim(otroSim))
+	
+	//valoracion de interesados
+	unSim.setPersonalidad(interesado)
+	var amigo1 = testSimFixture.getAmigo1()
+		amigo1.setDinero(500)
+	otroSim.hacerAmigo(amigo1)
+	assert.equals(50, unSim.valorarSim(otroSim))
+	
+	//valoracion de superficiales
+	unSim.setPersonalidad(superficial)
+	assert.equals(200, unSim.valorarSim(otroSim))
+	
+	//valoracion de peleados con la vida
+	unSim.setPersonalidad(peleadoConLaVida)
+	assert.equals(0, unSim.valorarSim(otroSim))
+}
+
+test "2. Saber quienes es el amigo a quien más valora un Sim."{
+	var unSim = new Sim("sim", "masculino", 20, superficial, 10)
+	var sim4 = testSimFixture.getAmigo4()
+		sim4.setPopularidad(10)
+		
+	var sim5 = testSimFixture.getAmigo5()
+		sim5.setPopularidad(20)
+		
+	var sim6 = testSimFixture.getAmigo6()
+		sim6.setPopularidad(30)
+		
+		unSim.hacerAmigo(sim4)
+		unSim.hacerAmigo(sim5)
+		unSim.hacerAmigo(sim6)
+		
+	assert.equals(sim6.getNombre(), unSim.amigoMasValorado().getNombre())
+}
+
+test "3. Hacer que un Sim se haga amigo de otro"{
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getAmigo1())
+	unSim.hacerAmigo(testSimFixture.getAmigo2())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
+	assert.equals("sim1", unSim.getAmigos().get(0).getNombre())
+	assert.equals("sim2", unSim.getAmigos().get(1).getNombre())
+	assert.equals("sim3", unSim.getAmigos().get(2).getNombre())
+}
+
+test "4. Hacer que dos Sims se hagan amigos entre sí"{
+	var unSim = new Sim("unSim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("otroSim", "masculino", 20, buenazo, 10)
+	unSim.hacerAmigo(otroSim)
+	otroSim.hacerAmigo(unSim)
+	
+	assert.equals("otroSim", unSim.getAmigos().get(0).getNombre())
+	assert.equals("unSim", otroSim.getAmigos().get(0).getNombre())
+}
+
+test "5. Saber si un Sim es amigo de otro."{
+	var unSim = new Sim("unSim", "masculino", 20, buenazo, 10)
+	var otroSim = new Sim("otroSim", "masculino", 20, buenazo, 10)
+	assert.equals(false, unSim.esAmigo(otroSim))
+	otroSim.hacerAmigo(unSim)
+	assert.equals(true, otroSim.esAmigo(unSim))
+	
+	var simJuan = new Sim("juan", "masculino", 20, buenazo, 10)
+	simJuan.hacerAmigo(testSimFixture.getSimPedro());
+	assert.equals(simJuan.esAmigo(testSimFixture.getSimPedro()))
+	
+	assert.equals(false,simJuan.esAmigo(testSimFixture.getSimHernan()))
+}
+
+test "6. Preguntarle a un Sim cuales son sus 4 amigos más nuevos"{
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getSimHernan())
+	unSim.hacerAmigo(testSimFixture.getSimJuan())
+	unSim.hacerAmigo(testSimFixture.getSimMartin())
+	unSim.hacerAmigo(testSimFixture.getSimEmiliano())
+	unSim.hacerAmigo(testSimFixture.getSimGuillermo())
+	unSim.hacerAmigo(testSimFixture.getSimPedro())
+	
+	var ultimos4amigos =  unSim.ultimoNAmigos(4);
+	
+	assert.equals(testSimFixture.getSimMartin().getNombre(), ultimos4amigos.get(0).getNombre())	
+	assert.equals(testSimFixture.getSimEmiliano().getNombre(), ultimos4amigos.get(1).getNombre())	
+	assert.equals(testSimFixture.getSimGuillermo().getNombre(), ultimos4amigos.get(2).getNombre())	
+	assert.equals(testSimFixture.getSimPedro().getNombre(), ultimos4amigos.get(3).getNombre())	
+		
+}
+
+test "7. Preguntarle a un Sim cuales son sus 4 amigos más antiguos"{
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getSimHernan())
+	unSim.hacerAmigo(testSimFixture.getSimJuan())
+	unSim.hacerAmigo(testSimFixture.getSimMartin())
+	unSim.hacerAmigo(testSimFixture.getSimEmiliano())
+	unSim.hacerAmigo(testSimFixture.getSimGuillermo())
+	unSim.hacerAmigo(testSimFixture.getSimPedro())
+	
+	var ultimos4amigos =  unSim.masAntiguos(4);
+	
+	assert.equals(testSimFixture.getSimHernan().getNombre(),ultimos4amigos.get(0).getNombre())	
+	assert.equals(testSimFixture.getSimJuan().getNombre(),ultimos4amigos.get(1).getNombre())	
+	assert.equals(testSimFixture.getSimMartin().getNombre(),ultimos4amigos.get(2).getNombre())	
+	assert.equals(testSimFixture.getSimEmiliano().getNombre(),ultimos4amigos.get(3).getNombre())	
+}	
+
+test "8. Preguntarle a un Sim cual es su nivel de popularidad"{
+	var unSim = new Sim("sim1", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getAmigo1())
+	unSim.hacerAmigo(testSimFixture.getAmigo2())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
+	
+	assert.equals(30, unSim.getPopularidad())
+}
+
+test "9. Preguntarle a un Sim si es el más popular de su círculo de amigos."{
+	//esto se da cuando tiene el mayor coeficiente de popularidad entre todos ellos."
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	var simMarcelo = new Sim("marcelo", "masculino", 20, buenazo, 10)
+	
+	unSim.hacerAmigo(testSimFixture.getAmigo1())
+	unSim.hacerAmigo(testSimFixture.getAmigo2())
+	unSim.hacerAmigo(testSimFixture.getAmigo3())
+	
+	simMarcelo.hacerAmigo(testSimFixture.getAmigo1())
+	simMarcelo.hacerAmigo(testSimFixture.getAmigo2())
+	
+	unSim.hacerAmigo(simMarcelo)
+	
+	assert.equals(unSim.esElMasPopular())
+}
+
+test "10. Hacer que un Sim tenga un estado de ánimo particular."{
+	//i el Sim ya tenía uno, se le va (vuelve a la normalidad) y es reemplazada por este."
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.setEstadoDeAnimo(euforico)
+	
+	assert.equals(unSim.getEstadoDeAnimo(),euforico)
+	
+}
+
+test "11. Hacer que a un Sim se le vaya su estado de ánimo actual (y vuelva a la normalidad)"{
+
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.setEstadoDeAnimo(normal)
+	
+	assert.equals(unSim.getEstadoDeAnimo(),normal)
+	
+}
+
+test "12. Hacer que un Sim vaya a trabajar. Este mensaje debe funcionar aún para Sims desocupados."{
+
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.trabajar()
+	
+	assert.equals(unSim.getEstadoDeAnimo(),normal)
+	
+} 
+
+test "12. Hacer que un Sim vaya a trabajar. Este mensaje debe funcionar aún para Sims desocupados."{
+
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.trabajar()
+	
+	assert.equals(unSim.getEstadoDeAnimo(),normal)
+	
+} 
+
+/* 13. ¿Hay alguna repetición de lógica que sea imposible salvar con las herramientas vistas hasta ahora?
+ * Consideramos que no hay ninguna repetición de logica que sea imposible de salvar.
+ */

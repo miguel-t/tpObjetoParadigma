@@ -170,3 +170,16 @@ test "12. Hacer que un Sim vaya a trabajar. Este mensaje debe funcionar aún para
 	assert.equals(unSim.getEstadoDeAnimo(),normal)
 	
 } 
+
+test "12. Hacer que un Sim vaya a trabajar. Este mensaje debe funcionar aún para Sims desocupados."{
+
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.trabajar()
+	
+	assert.equals(unSim.getEstadoDeAnimo(),normal)
+	
+} 
+
+/* 13. ¿Hay alguna repetición de lógica que sea imposible salvar con las herramientas vistas hasta ahora?
+ * Consideramos que no hay ninguna repetición de logica que sea imposible de salvar.
+ */

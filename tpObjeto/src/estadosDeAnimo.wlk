@@ -1,14 +1,32 @@
 
 object euforico{
 	method influir(unSim){
-		unSim.setNivelDeFelicidad(unSim.getNivelDeFelicidad() + 1000)
+		unSim.setNivelDeFelicidadAdicional(1000)
+		unSim.olvidarConocimientos()
+	}
+	
+	method normalizar(unSim){
+		unSim.setNivelDeFelicidadAdicional(-1000)
+		unSim.recordarConocimientos()
 	}
 }
 
 object melancolico{
 	method influir(unSim){
-		unSim.setNivelDeFelicidad(unSim.getNivelDeFelicidad() - 200)
+		unSim.setNivelDeFelicidadAdicional(-200)
+	}
+	
+	method normalizar(unSim){
+		unSim.setNivelDeFelicidadAdicional(200)
 	}
 }
 
-object normal{}
+object normal{
+	method influir(unSim) {
+		
+	}
+	
+	method normalizar(unSim){
+		
+	}
+}

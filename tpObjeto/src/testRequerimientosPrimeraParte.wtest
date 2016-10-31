@@ -1,6 +1,7 @@
 import Sim.*
 import personalidades.*
 import testSimFixture.*
+import estadosDeAnimo.*
 
 test "1. Saber cuánto valora un Sim a otro." {
 	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
@@ -142,3 +143,30 @@ test "9. Preguntarle a un Sim si es el más popular de su círculo de amigos."{
 	
 	assert.equals(unSim.esElMasPopular())
 }
+
+test "10. Hacer que un Sim tenga un estado de ánimo particular."{
+	//i el Sim ya tenía uno, se le va (vuelve a la normalidad) y es reemplazada por este."
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.setEstadoDeAnimo(euforico)
+	
+	assert.equals(unSim.getEstadoDeAnimo(),euforico)
+	
+}
+
+test "11. Hacer que a un Sim se le vaya su estado de ánimo actual (y vuelva a la normalidad)"{
+
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.setEstadoDeAnimo(normal)
+	
+	assert.equals(unSim.getEstadoDeAnimo(),normal)
+	
+}
+
+test "12. Hacer que un Sim vaya a trabajar. Este mensaje debe funcionar aún para Sims desocupados."{
+
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10)
+	unSim.trabajar()
+	
+	assert.equals(unSim.getEstadoDeAnimo(),normal)
+	
+} 

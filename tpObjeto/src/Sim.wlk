@@ -14,9 +14,11 @@ class Sim {
 	var personalidad = 0
 	var dinero = 0
 	var dineroMaximoAPrestar = 0
+	var nivelDeFelicidadAdicional = 0
 	var estadoDeAnimo = normal
 	var fuentesDeInformacion = new List()
 	var conocimientos = new List()
+	var conocimientosOlvidados = new List()
 
 	constructor(_nombre, _sexo, _edad, _personalidad, _felicidad) {
 		nombre = _nombre
@@ -52,7 +54,7 @@ class Sim {
 	}
 
 	method getNivelDeFelicidad() {
-		return nivelDeFelicidad
+		return nivelDeFelicidad + nivelDeFelicidadAdicional
 	}
 
 	method setNivelDeFelicidad(_nivel) {
@@ -73,6 +75,10 @@ class Sim {
 	
 	method getEmpleo(){
 		return empleo
+	}
+	
+	method setNivelDeFelicidadAdicional(_nivel) {
+		nivelDeFelicidadAdicional = _nivel
 	}
 	
 	method trabajar(){
@@ -172,7 +178,9 @@ class Sim {
 	}
 	
 	method setEstadoDeAnimo(_estadoDeAnimo){
+		estadoDeAnimo.normalizar(self)
 		estadoDeAnimo = _estadoDeAnimo
+		estadoDeAnimo.influir(self)
 	}
 	
 	method getEstadoDeAnimo(){
@@ -205,5 +213,15 @@ class Sim {
 	
 	method cumplirAnio(){
 		self.setEdad(self.getEdad()+1)
+	}
+	
+	method olvidarConocimientos() {
+		conocimientosOlvidados = conocimientos
+		conocimientos = new List()
+	}
+	
+	method recordarConocimientos() {
+		conocimientos = conocimientosOlvidados
+		conocimientosOlvidados = new List()
 	}
 }

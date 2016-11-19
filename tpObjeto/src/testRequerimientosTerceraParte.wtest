@@ -1,0 +1,58 @@
+import Sim.*
+import Vim.*
+import personalidades.*
+import testSimFixture.*
+import estadosDeAnimo.*
+import fuentesDeInformacion.*
+import personajes.*
+import poderes.*
+import reacciones.*
+
+test "1.Hacer que un Sims ataque a un superhéroe." {
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10,50,100)
+	unSim.atacar(wolverine)
+	
+	var ganador
+	if(wolverine.estaVivo()){
+		ganador = wolverine
+	}else{
+		ganador = unSim
+	}
+	assert.equals(wolverine, ganador)
+
+}
+
+test "2.Hacer que un Superhéroe ataque a un Sim." {
+	hulk.molestar()
+	hulk.molestar()
+	hulk.molestar()
+	hulk.molestar()
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10,50,100)
+	
+	var ganador
+	hulk.atacar(unSim)
+	if(unSim.estaVivo()){
+		ganador = unSim
+	}else{
+		ganador = hulk
+	}
+	assert.equals(hulk, ganador)
+	
+}
+
+test "Hacer que un Sims ataque a otro." {
+	var unSim = new Sim("sim", "masculino", 20, buenazo, 10,50,100)
+	var otroSim = new Sim("sim", "masculino", 20, buenazo, 10,70,100)
+	unSim.setDinero(60)
+	otroSim.setDinero(10)
+	
+	var ganador
+	unSim.atacar(otroSim)
+	if (unSim.getDinero() > 0) {
+		ganador = unSim
+	} else {
+		ganador = otroSim
+	}
+	
+	assert.equals(otroSim,ganador)
+}

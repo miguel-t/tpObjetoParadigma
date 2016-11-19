@@ -19,6 +19,8 @@ class Sim {
 	var fuentesDeInformacion = new List()
 	var conocimientos = new List()
 	var conocimientosOlvidados = new List()
+	var fuerza = 0
+	var vida = 0
 
 	constructor(_nombre, _sexo, _edad, _personalidad, _felicidad) {
 		nombre = _nombre
@@ -26,6 +28,16 @@ class Sim {
 		personalidad = _personalidad
 		edad = _edad
 		nivelDeFelicidad = _felicidad
+	}
+	
+		constructor(_nombre, _sexo, _edad, _personalidad, _felicidad,_fuerza,_vida) {
+		nombre = _nombre
+		sexo = _sexo 
+		personalidad = _personalidad
+		edad = _edad
+		nivelDeFelicidad = _felicidad
+		fuerza = _fuerza
+		vida = _vida
 	}
 	
 	method getNombre(){
@@ -80,6 +92,12 @@ class Sim {
 	method setNivelDeFelicidadAdicional(_nivel) {
 		nivelDeFelicidadAdicional = _nivel
 	}
+	
+	method setFuerza(_fuerza) {
+		fuerza = _fuerza
+	}
+	
+	method getFuerza() = fuerza
 	
 	method trabajar(){
 		self.setEstadoDeAnimo(normal)
@@ -144,9 +162,7 @@ class Sim {
 	
 	//9
 	method esElMasPopular(){
-		var nivelPopularidad = self.getPopularidad();
-		var amigosPopulares = amigos.all({amigo => amigo.getPopularidad() <= nivelPopularidad})
-		return amigosPopulares
+		return amigos.all({amigo => amigo.getPopularidad() <= self.getPopularidad()})
 	}
 	
 	method ordenarSegunValoracion(){
@@ -224,4 +240,50 @@ class Sim {
 		conocimientos = conocimientosOlvidados
 		conocimientosOlvidados = new List()
 	}
+	
+	method pierde(fuerzaOponente) {
+		var dineroRestante = self.getDinero() - fuerzaOponente
+		//Interpretamos la perdida del dinero como un saqueo, entonces 
+		//le saca lo que tiene y nunca queda negativo
+		if ( dineroRestante < 0) {
+			dineroRestante = 0
+		}
+		self.setDinero(dineroRestante)
+	}
+	
+	method atacar(victima){
+		if (self.esAmigo(victima) || victima.esAmigo(self)) {
+			error.throwWithMessage("Son amigos, no puede atacar")
+		}
+		var fuerzaAtacante = self.getFuerza()
+		var fuerzaVictima = victima.getFuerza()
+		if (fuerzaAtacante > fuerzaVictima) {
+			//Consideramos que el atacante pierde si tienen igual fuerza
+			victima.pierde(fuerzaAtacante)	
+		} else {
+			self.pierde(fuerzaVictima)
+		}
+	}
+	
+	method obtenerVida() = vida
+	
+	method estaVivo() = vida>0
+	
+	method reducirVida(valor){
+		if(vida>valor){
+			vida = vida - valor
+		}else{
+			vida = 0
+		} 
+	}
+	
+	method aumentarVida(valor){
+		vida = vida + valor
+	}
+	
+	method borrarPoderes(){
+		self.setDinero(0)
+	}
+	
+	method esSuper() = false
 }

@@ -5,29 +5,12 @@ import reacciones.*
 
 class SuperPersonajes {
 	var peleo = false
-	var vida = 50
 	var poderes = []
 
-	method obtenerVida() = vida
 	method obtenerPoderes() = poderes
-	
-	method estaVivo() = vida>0
-
 
 	method borrarPoderes(){
 		poderes.clear()
-	}
-	
-	method reducirVida(valor){
-		if(vida>valor){
-			vida = vida - valor
-		}else{
-			vida = 0
-		} 
-	}
-	
-	method aumentarVida(valor){
-		vida = vida + valor
 	}
 	
 		method esAmigo(unPersonaje) {
@@ -43,17 +26,29 @@ class SuperPersonajes {
 	method getPeleo() = peleo
 	method atacar(victima)
 	
-	//Si un SuperPersonaje es atacado por un Sim y pierde, pierde tanta vida como fuerza
-	// tenía el Oponente
-	method pierde(fuerzaOponente) {
-		self.reducirVida(fuerzaOponente)
-	}
-	
 	method esSuper() = true
 }
 	
 object hulk inherits SuperPersonajes {
-		
+	
+	var vida = 50
+	
+	method obtenerVida() = vida	
+	
+	method estaVivo() = vida>0
+	
+	method reducirVida(valor){
+		if(vida>valor){
+			vida = vida - valor
+		}else{
+			vida = 0
+		} 
+	}
+	
+	method aumentarVida(valor){
+		vida = vida + valor
+	}
+	
 	method reaccionar(){
 		if(peleo){
 			culpa.actuar(self)
@@ -88,13 +83,25 @@ object hulk inherits SuperPersonajes {
 		}
 	}
 	
+	//Si un Personaje es atacado por un Sim y pierde, pierde tanta vida como fuerza
+	// tenía el Oponente
+	method pierde(fuerzaOponente) {
+		self.reducirVida(fuerzaOponente)
+	}
+	
 }
 
 object wolverine inherits SuperPersonajes {
 	
+	var vida = 100
+	
+	method obtenerVida() = vida
+		
+	method estaVivo() = vida>0
+	
 	override method obtenerPoderes() = [fuerza, objetosCortantes]
 	
-	override method reducirVida(valor){
+	method reducirVida(valor){
 		if(vida>=valor){
 			vida = vida - valor
 			self.regenerar()
@@ -125,13 +132,35 @@ object wolverine inherits SuperPersonajes {
 		}
 	}
 	
+	//Si un Personaje es atacado por un Sim y pierde, pierde tanta vida como fuerza
+	// tenía el Oponente
+	method pierde(fuerzaOponente) {
+		self.reducirVida(fuerzaOponente)
+	}
 }
 
 //villanos
 object magneto inherits SuperPersonajes {
 	
+	var vida = 100
+	
+	method obtenerVida() = vida
+	
+	method estaVivo() = vida>0
+		
 	override method obtenerPoderes() = [vuelo, telequinesis, objetosCortantes]
 	
+	method reducirVida(valor){
+		if(vida>valor){
+			vida = vida - valor
+		}else{
+			vida = 0
+		} 
+	}
+	
+	method aumentarVida(valor){
+		vida = vida + valor
+	}
 	
 	method obtenerExperiencia(){
 		vida = vida + 10
@@ -155,11 +184,23 @@ object magneto inherits SuperPersonajes {
 			victima.atacar(self);
 		}
 	}
+	
+	//Si un Personaje es atacado por un Sim y pierde, pierde tanta vida como fuerza
+	// tenía el Oponente
+	method pierde(fuerzaOponente) {
+		self.reducirVida(fuerzaOponente)
+	}
 
 }
 
 object hombreAbsorbente inherits SuperPersonajes {
-
+	
+	var vida = 50
+	
+	method obtenerVida() = vida	
+	
+	method estaVivo() = vida>0
+	
 	override method obtenerPoderes() = [fuerza]
 	
 	method absorberPoder(victima){
@@ -183,4 +224,21 @@ object hombreAbsorbente inherits SuperPersonajes {
 		}
 	}
 	
+	method reducirVida(valor){
+		if(vida>valor){
+			vida = vida - valor
+		}else{
+			vida = 0
+		} 
+	}
+	
+	method aumentarVida(valor){
+		vida = vida + valor
+	}
+	
+	//Si un Personaje es atacado por un Sim y pierde, pierde tanta vida como fuerza
+	// tenía el Oponente
+	method pierde(fuerzaOponente) {
+		self.reducirVida(fuerzaOponente)
+	}
 }

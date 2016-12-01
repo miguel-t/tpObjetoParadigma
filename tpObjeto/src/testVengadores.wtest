@@ -1,0 +1,103 @@
+import personajes.*
+import poderes.*
+
+/* --- Test Hulk --- */
+test "1 a.- molestar a hulk dos veces" {
+	hulk.molestar()
+	hulk.molestar()
+	assert.equals(350 ,hulk.obtenerVida())
+}
+
+test "1 b.- calmar a hulk 1 vez" {
+	hulk.acariciar()
+	assert.equals(50, hulk.obtenerVida())
+}
+
+test "1 c.- molestar dos veces y disminuir vida en 10"{
+	hulk.molestar()
+	hulk.molestar()
+	hulk.reducirVida(10)
+	
+	assert.equals(340, hulk.obtenerVida())
+}
+
+
+/* --- Test Peleas --- */
+
+test "2 .- Crear a magneto, poner casco y atacar a Hulk"{
+	magneto.ponerCasco()
+	var ganador
+	magneto.atacar(hulk)
+	if(magneto.estaVivo()){
+		ganador = magneto
+	}else{
+		ganador = hulk
+	}
+	assert.equals(magneto, ganador)
+	assert.equals(1110, magneto.obtenerVida())
+	assert.equals(0, hulk.obtenerVida())
+}
+
+test "3 .- Magneto vs Hulk, resultado diferente "{
+	hulk.molestar()
+	hulk.molestar()
+	var ganador
+	magneto.atacar(hulk)
+	if(magneto.estaVivo()){
+		ganador = magneto
+	}else{
+		ganador = hulk
+	}
+	assert.equals(hulk, ganador)
+}
+
+test "4 .- Hulk adquiere experiencia al pelear"{
+	hulk.molestar()
+	hulk.molestar()
+	magneto.atacar(hulk);
+	assert.equals( 340 , hulk.obtenerVida() )
+}
+
+test "5 .- Wolverine vs Hombre Absorbente"{
+	hombreAbsorbente.atacar(wolverine)
+	var ganador = hombreAbsorbente.estaVivo()
+	assert.equals(true,ganador)
+	/*if(hombreAbsorbente.estaVivo()){
+		ganador = hombreAbsorbente
+	}else{
+		ganador = wolverine
+	}
+	assert.equals(hombreAbsorbente, ganador)*/
+}
+
+test "6 a.- Wolverine vs Hulk"{
+	hulk.molestar()
+	hulk.molestar()
+	
+	var ganador
+	
+	wolverine.atacar(hulk)
+	
+	if(wolverine.estaVivo()){
+		ganador = wolverine
+	}else{
+		ganador = hulk
+	}
+	assert.equals(hulk, ganador)
+}
+
+test "6 a.- Wolverine vs Hulk, con Hulk mas enojado"{
+	hulk.molestar()
+	hulk.molestar()
+	hulk.molestar()
+	hulk.molestar()
+	
+	var ganador
+	wolverine.atacar(hulk)
+	if(wolverine.estaVivo()){
+		ganador = wolverine
+	}else{
+		ganador = hulk
+	}
+	assert.equals(hulk, ganador)
+} 

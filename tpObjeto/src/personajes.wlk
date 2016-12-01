@@ -8,7 +8,7 @@ class SuperPersonajes {
 	var poderes = []
 
 	method obtenerPoderes() = poderes
-
+	
 	method borrarPoderes(){
 		poderes.clear()
 	}
@@ -121,8 +121,7 @@ object wolverine inherits SuperPersonajes {
 	}
 	
 	override method atacar(victima){
-		
-		poderes.forEach({
+		self.obtenerPoderes().forEach({
 			poder => poder.actuar(self, victima)
 		})
 		self.caraDeNaipe();
@@ -175,7 +174,7 @@ object magneto inherits SuperPersonajes {
 	}
 	
 	override method atacar(victima){
-		poderes.forEach({
+		self.obtenerPoderes().forEach({
 			poder => poder.actuar(self, victima)
 		})
 		self.obtenerExperiencia()
@@ -214,7 +213,7 @@ object hombreAbsorbente inherits SuperPersonajes {
 	}
 	
 	override method atacar(victima){
-		poderes.forEach({
+		self.obtenerPoderes().forEach({
 			poder => poder.actuar(self, victima)
 		})
 		self.absorberPoder(victima)

@@ -34,7 +34,7 @@ test "2 .- Crear a magneto, poner casco y atacar a Hulk"{
 		ganador = hulk
 	}
 	assert.equals(magneto, ganador)
-	assert.equals(1110, magneto.obtenerVida())
+	assert.equals(1029, magneto.obtenerVida())
 	assert.equals(0, hulk.obtenerVida())
 }
 
@@ -55,13 +55,13 @@ test "4 .- Hulk adquiere experiencia al pelear"{
 	hulk.molestar()
 	hulk.molestar()
 	magneto.atacar(hulk);
-	assert.equals( 340 , hulk.obtenerVida() )
+	assert.equals( 180 , hulk.obtenerVida() )
 }
 
 test "5 .- Wolverine vs Hombre Absorbente"{
 	hombreAbsorbente.atacar(wolverine)
 	var ganador = hombreAbsorbente.estaVivo()
-	assert.equals(true,ganador)
+	assert.equals(false,ganador)
 	/*if(hombreAbsorbente.estaVivo()){
 		ganador = hombreAbsorbente
 	}else{
@@ -83,7 +83,7 @@ test "6 a.- Wolverine vs Hulk"{
 	}else{
 		ganador = hulk
 	}
-	assert.equals(hulk, ganador)
+	assert.equals(wolverine, ganador)
 }
 
 test "6 a.- Wolverine vs Hulk, con Hulk mas enojado"{
